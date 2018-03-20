@@ -11,7 +11,12 @@
     Object.defineProperty(_Ember, 'notifyPropertyChange', {
       get: function() {
         return function(object, key) {
-          return object.notifyPropertyChange(key);
+          if (object.notifyPropertyChange) {
+            object.notifyPropertyChange(key);
+          } else {
+            _Ember.propertyWillChange(object, key);
+            _Ember.propertyDidChange(object, key);
+          }
         }
       }
     });
